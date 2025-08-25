@@ -1,6 +1,12 @@
-
 public class Demo04 {
     public static void main(String[] args) {
-        System.out.println(new PaymentService().pay(new Payment("UPI", 499)));
+        Payment payment = new Payment("UPI", 499);
+        PaymentService service = new PaymentService();
+
+        service.registerStrategy("CARD", new CardPayment());
+        service.registerStrategy("UPI", new UpiPayment());
+        service.registerStrategy("WALLET", new WalletPayment());
+
+        System.out.println(service.pay(payment));
     }
 }

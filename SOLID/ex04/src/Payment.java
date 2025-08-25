@@ -1,4 +1,9 @@
 public class Payment {
-    String provider; double amount;
-    Payment(String p, double a){ provider=p; amount=a; }
+    String provider;
+    double amount;
+
+    public Payment(String provider, double amount) {
+        this.provider = provider;
+        this.amount = amount;
+    }
 }

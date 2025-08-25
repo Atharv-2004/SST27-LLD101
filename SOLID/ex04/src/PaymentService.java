@@ -1,11 +1,18 @@
+import java.util.HashMap;
+import java.util.Map;
 
 public class PaymentService {
-    String pay(Payment p){
-        switch (p.provider) {
-            case "CARD": return "Charged card: " + p.amount;
-            case "UPI":  return "Paid via UPI: " + p.amount;
-            case "WALLET": return "Wallet debit: " + p.amount;
-            default: throw new RuntimeException("No provider");
+    private final Map<String, PaymentStrategy> strategies = new HashMap<>();
+
+    public void registerStrategy(String provider, PaymentStrategy strategy) {
+        strategies.put(provider, strategy);
+    }
+
+    public String pay(Payment payment) {
+        PaymentStrategy strategy = strategies.get(payment.provider);
+        if (strategy == null) {
+            throw new RuntimeException("No provider");
         }
+        return strategy.pay(payment.amount);
     }
 }
