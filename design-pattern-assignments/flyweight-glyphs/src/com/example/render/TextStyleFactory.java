@@ -1,20 +1,21 @@
 package com.example.render;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
+/** Factory that returns shared TextStyle instances (flyweights). */
 public class TextStyleFactory {
-	private static final Map<String, TextStyle> cache = new HashMap<>();
+    private final Map<String, TextStyle> cache = new ConcurrentHashMap<>();
 
-	public static TextStyle get(String font, int size, boolean bold) {
-		String key = font + "|" + size + "|" + (bold ? "B" : "N");
-		TextStyle s = cache.get(key);
-		if (s == null) {
-			s = new TextStyle(font, size, bold);
-			cache.put(key, s);
-		}
-		return s;
-	}
+    public TextStyle get(String font, int size, boolean bold) {
+        Objects.requireNonNull(font, "font");
+        String key = key(font, size, bold);
+        return cache.computeIfAbsent(key, k -> new TextStyle(font, size, bold));
+    }
+
+    static String key(String font, int size, boolean bold) {
+        return font + "|" + size + "|" + (bold ? "B" : "N");
+    }
 }
-
 

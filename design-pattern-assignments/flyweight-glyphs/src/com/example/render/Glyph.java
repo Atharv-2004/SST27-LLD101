@@ -1,14 +1,20 @@
 package com.example.render;
 
+import java.util.Objects;
+
+/**
+ * Glyph holds extrinsic state (character) and intrinsic shared state (TextStyle).
+ */
 public class Glyph {
-    private final char ch;
+    private final char glyph;
     private final TextStyle style;
 
-    public Glyph(char ch, TextStyle style) {
-        this.ch = ch; this.style = style;
+    public Glyph(char glyph, TextStyle style) {
+        this.glyph = glyph;
+        this.style = Objects.requireNonNull(style, "style");
     }
 
-    public int drawCost() { return style.size + (style.bold ? 10 : 0); }
-    public char getCh() { return ch; }
+    public char getGlyph() { return glyph; }
     public TextStyle getStyle() { return style; }
 }
+
